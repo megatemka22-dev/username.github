@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdaptiveKey - Интеллектуальная механическая клавиатура</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3a86ff;
+            --primary-dark: #2667cc;
+            --secondary: #8338ec;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --border-radius: 12px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fefefe;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--dark) 0%, #16213e 100%);
+            color: white;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo-icon {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(58, 134, 255, 0.1) 0%, rgba(58, 134, 255, 0) 70%);
+            border-radius: 50%;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(58, 134, 255, 0.3);
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(58, 134, 255, 0.4);
+        }
+        
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+        
+        /* Problem Section */
+        .problem-section {
+            background-color: white;
+        }
+        
+        .problem-content {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+        
+        .problem-text {
+            width: 100%;
+        }
+        
+        .problem-box {
+            background-color: #fff5f5;
+            border-left: 5px solid #ff6b6b;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .problem-box h3 {
+            color: #d63031;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .problem-list {
+            list-style-type: none;
+        }
+        
+        .problem-list li {
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .problem-list li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        /* Solution Section */
+        .solution-section {
+            background-color: #f8f9fa;
+        }
+        
+        .solution-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            font-size: 1.1rem;
+            color: var(--gray);
+        }
+        
+        .solution-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .feature {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .feature h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Keyboard Visual */
+        .keyboard-section {
+            background-color: white;
+        }
+        
+        .keyboard-container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .keyboard-base {
+            width: 100%;
+            background: linear-gradient(145deg, #2d3436, #1e272e);
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            padding: 25px;
+        }
+        
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        
+        .key {
+            background-color: #34495e;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            min-height: 60px;
+            user-select: none;
+        }
+        
+        .key:hover {
+            background-color: #3a86ff;
+            transform: translateY(-5px);
+            z-index: 10;
+        }
+        
+        .key.adaptive {
+            background-color: #2c3e50;
+            border: 2px solid #3a86ff;
+        }
+        
+        .key.adaptive:hover {
+            background-color: #3a86ff;
+        }
+        
+        .key-display {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #3a86ff;
+            flex-direction: column;
+            padding: 5px;
+        }
+        
+        .key-label {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 0.7rem;
+            color: #95a5a6;
+        }
+        
+        .key.adaptive .key-label {
+            color: #3a86ff;
+        }
+        
+        .key-space {
+            width: 300px;
+            height: 60px;
+        }
+        
+        /* Key sizes */
+        .key-esc { width: 70px; }
+        .key-f1 { width: 60px; }
+        .key-f2 { width: 60px; }
+        .key-f3 { width: 60px; }
+        .key-f4 { width: 60px; }
+        .key-f5 { width: 60px; }
+        .key-f6 { width: 60px; }
+        .key-f7 { width: 60px; }
+        .key-f8 { width: 60px; }
+        .key-f9 { width: 60px; }
+        .key-f10 { width: 60px; }
+        .key-f11 { width: 60px; }
+        .key-f12 { width: 60px; }
+        .key-print { width: 70px; }
+        .key-scroll { width: 70px; }
+        .key-pause { width: 70px; }
+        
+        .key-tilde { width: 70px; }
+        .key-1 { width: 60px; }
+        .key-2 { width: 60px; }
+        .key-3 { width: 60px; }
+        .key-4 { width: 60px; }
+        .key-5 { width: 60px; }
+        .key-6 { width: 60px; }
+        .key-7 { width: 60px; }
+        .key-8 { width: 60px; }
+        .key-9 { width: 60px; }
+        .key-0 { width: 60px; }
+        .key-minus { width: 60px; }
+        .key-plus { width: 60px; }
+        .key-backspace { width: 120px; }
+        
+        .key-tab { width: 90px; }
+        .key-q { width: 60px; }
+        .key-w { width: 60px; }
+        .key-e { width: 60px; }
+        .key-r { width: 60px; }
+        .key-t { width: 60px; }
+        .key-y { width: 60px; }
+        .key-u { width: 60px; }
+        .key-i { width: 60px; }
+        .key-o { width: 60px; }
+        .key-p { width: 60px; }
+        .key-bracket-open { width: 60px; }
+        .key-bracket-close { width: 60px; }
+        .key-backslash { width: 90px; }
+        
+        .key-caps { width: 100px; }
+        .key-a { width: 60px; }
+        .key-s { width: 60px; }
+        .key-d { width: 60px; }
+        .key-f { width: 60px; }
+        .key-g { width: 60px; }
+        .key-h { width: 60px; }
+        .key-j { width: 60px; }
+        .key-k { width: 60px; }
+        .key-l { width: 60px; }
+        .key-semicolon { width: 60px; }
+        .key-quote { width: 60px; }
+        .key-enter { width: 130px; }
+        
+        .key-shift-left { width: 130px; }
+        .key-z { width: 60px; }
+        .key-x { width: 60px; }
+        .key-c { width: 60px; }
+        .key-v { width: 60px; }
+        .key-b { width: 60px; }
+        .key-n { width: 60px; }
+        .key-m { width: 60px; }
+        .key-comma { width: 60px; }
+        .key-period { width: 60px; }
+        .key-slash { width: 60px; }
+        .key-shift-right { width: 160px; }
+        
+        .key-ctrl { width: 80px; }
+        .key-win { width: 80px; }
+        .key-alt { width: 80px; }
+        .key-space { width: 350px; }
+        .key-alt-gr { width: 80px; }
+        .key-fn { width: 80px; }
+        .key-menu { width: 80px; }
+        .key-ctrl-right { width: 80px; }
+        
+        .key-arrow-up { width: 60px; }
+        .key-arrow-left { width: 60px; }
+        .key-arrow-down { width: 60px; }
+        .key-arrow-right { width: 60px; }
+        
+        .key-insert { width: 70px; }
+        .key-home { width: 70px; }
+        .key-pageup { width: 70px; }
+        .key-delete { width: 70px; }
+        .key-end { width: 70px; }
+        .key-pagedown { width: 70px; }
+        
+        .key-num-0 { width: 120px; }
+        .key-num-1 { width: 60px; }
+        .key-num-2 { width: 60px; }
+        .key-num-3 { width: 60px; }
+        .key-num-4 { width: 60px; }
+        .key-num-5 { width: 60px; }
+        .key-num-6 { width: 60px; }
+        .key-num-7 { width: 60px; }
+        .key-num-8 { width: 60px; }
+        .key-num-9 { width: 60px; }
+        .key-num-plus { width: 60px; height: 120px; margin-top: -60px; }
+        .key-num-enter { width: 60px; height: 120px; margin-top: -60px; }
+        
+        .key-display.demo {
+            background-color: rgba(58, 134, 255, 0.2);
+            color: white;
+            font-size: 0.7rem;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .keyboard-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        .legend-color.adaptive {
+            background-color: #2c3e50;
+            border: 2px solid #3a86ff;
+        }
+        
+        .legend-color.standard {
+            background-color: #34495e;
+        }
+        
+        /* Technical Specs */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .spec-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        
+        .spec-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .spec-name {
+            font-size: 1.1rem;
+            color: var(--gray);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, var(--dark) 0%, #16213e 100%);
+            color: white;
+            padding: 100px 0;
+        }
+        
+        .cta-section .section-title {
+            color: white;
+        }
+        
+        .cta-section p {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #0f0f1e;
+            color: #aaa;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-column h3 {
+            color: white;
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .keyboard-base {
+                transform: scale(0.9);
+                transform-origin: top center;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .keyboard-base {
+                transform: scale(0.8);
+                padding: 20px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .hero {
+                padding: 70px 0;
+            }
+            
+            section {
+                padding: 60px 0;
+            }
+            
+            .keyboard-base {
+                transform: scale(0.7);
+                padding: 15px;
+            }
+            
+            .key {
+                min-height: 50px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .keyboard-base {
+                transform: scale(0.6);
+            }
+            
+            .keyboard-legend {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-keyboard logo-icon"></i>
+                    <span>AdaptiveKey</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#problem">Проблема</a></li>
+                        <li><a href="#solution">Решение</a></li>
+                        <li><a href="#keyboard">Клавиатура</a></li>
+                        <li><a href="#specs">Характеристики</a></li>
+                        <li><a href="#cta">Заказать</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Механическая клавиатура, которая <span class="highlight">адаптируется</span> под вас</h1>
+                <p>AdaptiveKey — революционная гибридная система, сочетающая тактильные преимущества механических переключателей с гибкостью программируемых сенсорных дисплеев для каждой клавиши.</p>
+                <a href="#solution" class="cta-button">Узнать больше</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="problem" class="problem-section">
+        <div class="container">
+            <h2 class="section-title">Выявленная системная проблема</h2>
+            <div class="problem-content">
+                <div class="problem-text">
+                    <div class="problem-box">
+                        <h3>Фиксированное назначение клавиш</h3>
+                        <p>Традиционные механические клавиатуры ограничивают пользователей статичным расположением и функциональностью клавиш, что снижает эффективность работы в различных программных средах.</p>
+                        <ul class="problem-list">
+                            <li>Нельзя изменить подписи клавиш для разных приложений</li>
+                            <li>Забытые сочетания клавиш в профессиональном ПО</li>
+                            <li>Неэффективное использование пространства клавиатуры</li>
+                            <li>Сложность адаптации под индивидуальные рабочие процессы</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="solution" class="solution-section">
+        <div class="container">
+            <h2 class="section-title">Предлагаемое решение</h2>
+            <p class="solution-intro">Гибридная система AdaptiveKey, сочетающая механические переключатели Cherry MX с программируемыми TFT-LCD дисплеями для каждой функциональной клавиши.</p>
+            
+            <div class="solution-features">
+                <div class="feature">
+                    <i class="fas fa-microchip feature-icon"></i>
+                    <h3>Съемные дисплейные модули</h3>
+                    <p>Каждая клавиша оснащена высококонтрастным TFT-LCD дисплеем 128×128 пикселей с возможностью легкой замены.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-cogs feature-icon"></i>
+                    <h3>Механические переключатели</h3>
+                    <p>Совместимость с Cherry MX и аналогами для сохранения тактильных преимуществ механических клавиатур.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-magnet feature-icon"></i>
+                    <h3>Магнитное крепление</h3>
+                    <p>Надежное магнитное крепление дисплейных модулей с пого-контактами для передачи данных и питания.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-laptop-code feature-icon"></i>
+                    <h3>Кроссплатформенное ПО</h3>
+                    <p>Программное обеспечение для создания профилей клавиш, работающее на Windows, macOS и Linux.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Keyboard Section -->
+    <section id="keyboard" class="keyboard-section">
+        <div class="container">
+            <h2 class="section-title">Полноразмерная клавиатура AdaptiveKey</h2>
+            <p class="solution-intro">Все функциональные клавиши оснащены адаптивными дисплеями, которые меняют подписи в зависимости от активного приложения.</p>
+            
+            <div class="keyboard-container">
+                <div class="keyboard-base">
+                    <!-- Row 1: Function Keys -->
+                    <div class="keyboard-row">
+                        <div class="key key-esc adaptive" data-key="esc">
+                            <div class="key-display demo">ESC<br><span style="font-size:0.6rem">Отмена</span></div>
+                            <div class="key-label">Esc</div>
+                        </div>
+                        <div class="key key-f1 adaptive" data-key="f1">
+                            <div class="key-display"></div>
+                            <div class="key-label">F1</div>
+                        </div>
+                        <div class="key key-f2 adaptive" data-key="f2">
+                            <div class="key-display"></div>
+                            <div class="key-label">F2</div>
+                        </div>
+                        <div class="key key-f3 adaptive" data-key="f3">
+                            <div class="key-display"></div>
+                            <div class="key-label">F3</div>
+                        </div>
+                        <div class="key key-f4 adaptive" data-key="f4">
+                            <div class="key-display"></div>
+                            <div class="key-label">F4</div>
+                        </div>
+                        <div class="key key-f5 adaptive" data-key="f5">
+                            <div class="key-display"></div>
+                            <div class="key-label">F5</div>
+                        </div>
+                        <div class="key key-f6 adaptive" data-key="f6">
+                            <div class="key-display"></div>
+                            <div class="key-label">F6</div>
+                        </div>
+                        <div class="key key-f7 adaptive" data-key="f7">
+                            <div class="key-display"></div>
+                            <div class="key-label">F7</div>
+                        </div>
+                        <div class="key key-f8 adaptive" data-key="f8">
+                            <div class="key-display"></div>
+                            <div class="key-label">F8</div>
+                        </div>
+                        <div class="key key-f9 adaptive" data-key="f9">
+                            <div class="key-display"></div>
+                            <div class="key-label">F9</div>
+                        </div>
+                        <div class="key key-f10 adaptive" data-key="f10">
+                            <div class="key-display"></div>
+                            <div class="key-label">F10</div>
+                        </div>
+                        <div class="key key-f11 adaptive" data-key="f11">
+                            <div class="key-display"></div>
+                            <div class="key-label">F11</div>
+                        </div>
+                        <div class="key key-f12 adaptive" data-key="f12">
+                            <div class="key-display"></div>
+                            <div class="key-label">F12</div>
+                        </div>
+                        <div class="key key-print" data-key="print">
+                            <div class="key-label">Print</div>
+                        </div>
+                        <div class="key key-scroll" data-key="scroll">
+                            <div class="key-label">Scroll</div>
+                        </div>
+                        <div class="key key-pause" data-key="pause">
+                            <div class="key-label">Pause</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 2: Numbers and Symbols -->
+                    <div class="keyboard-row">
+                        <div class="key key-tilde" data-key="tilde">
+                            <div class="key-label">~ `</div>
+                        </div>
+                        <div class="key key-1" data-key="1">
+                            <div class="key-label">1 !</div>
+                        </div>
+                        <div class="key key-2" data-key="2">
+                            <div class="key-label">2 @</div>
+                        </div>
+                        <div class="key key-3" data-key="3">
+                            <div class="key-label">3 #</div>
+                        </div>
+                        <div class="key key-4" data-key="4">
+                            <div class="key-label">4 $</div>
+                        </div>
+                        <div class="key key-5" data-key="5">
+                            <div class="key-label">5 %</div>
+                        </div>
+                        <div class="key key-6" data-key="6">
+                            <div class="key-label">6 ^</div>
+                        </div>
+                        <div class="key key-7" data-key="7">
+                            <div class="key-label">7 &</div>
+                        </div>
+                        <div class="key key-8" data-key="8">
+                            <div class="key-label">8 *</div>
+                        </div>
+                        <div class="key key-9" data-key="9">
+                            <div class="key-label">9 (</div>
+                        </div>
+                        <div class="key key-0" data-key="0">
+                            <div class="key-label">0 )</div>
+                        </div>
+                        <div class="key key-minus" data-key="minus">
+                            <div class="key-label">- _</div>
+                        </div>
+                        <div class="key key-plus" data-key="plus">
+                            <div class="key-label">= +</div>
+                        </div>
+                        <div class="key key-backspace adaptive" data-key="backspace">
+                            <div class="key-display demo">Backspace<br><span style="font-size:0.6rem">Удалить</span></div>
+                            <div class="key-label">←</div>
+                        </div>
+                        <div class="key key-insert" data-key="insert">
+                            <div class="key-label">Insert</div>
+                        </div>
+                        <div class="key key-home" data-key="home">
+                            <div class="key-label">Home</div>
+                        </div>
+                        <div class="key key-pageup" data-key="pageup">
+                            <div class="key-label">Page Up</div>
+                        </div>
+                        <div class="key key-num-plus" data-key="numplus" style="position:relative;top:-30px;">
+                            <div class="key-label">+</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 3: QWERTY -->
+                    <div class="keyboard-row">
+                        <div class="key key-tab adaptive" data-key="tab" style="width: 90px;">
+                            <div class="key-display demo">Tab<br><span style="font-size:0.6rem">Вкладка</span></div>
+                            <div class="key-label">Tab</div>
+                        </div>
+                        <div class="key key-q" data-key="q">
+                            <div class="key-label">Q</div>
+                        </div>
+                        <div class="key key-w" data-key="w">
+                            <div class="key-label">W</div>
+                        </div>
+                        <div class="key key-e" data-key="e">
+                            <div class="key-label">E</div>
+                        </div>
+                        <div class="key key-r" data-key="r">
+                            <div class="key-label">R</div>
+                        </div>
+                        <div class="key key-t" data-key="t">
+                            <div class="key-label">T</div>
+                        </div>
+                        <div class="key key-y" data-key="y">
+                            <div class="key-label">Y</div>
+                        </div>
+                        <div class="key key-u" data-key="u">
+                            <div class="key-label">U</div>
+                        </div>
+                        <div class="key key-i" data-key="i">
+                            <div class="key-label">I</div>
+                        </div>
+                        <div class="key key-o" data-key="o">
+                            <div class="key-label">O</div>
+                        </div>
+                        <div class="key key-p" data-key="p">
+                            <div class="key-label">P</div>
+                        </div>
+                        <div class="key key-bracket-open" data-key="bracketopen">
+                            <div class="key-label">[ {</div>
+                        </div>
+                        <div class="key key-bracket-close" data-key="bracketclose">
+                            <div class="key-label">] }</div>
+                        </div>
+                        <div class="key key-backslash" data-key="backslash">
+                            <div class="key-label">\ |</div>
+                        </div>
+                        <div class="key key-delete" data-key="delete">
+                            <div class="key-label">Delete</div>
+                        </div>
+                        <div class="key key-end" data-key="end">
+                            <div class="key-label">End</div>
+                        </div>
+                        <div class="key key-pagedown" data-key="pagedown">
+                            <div class="key-label">Page Down</div>
+                        </div>
+                        <div class="key key-num-enter" data-key="numenter" style="position:relative;top:-30px;">
+                            <div class="key-label">Enter</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 4: ASDF -->
+                    <div class="keyboard-row">
+                        <div class="key key-caps adaptive" data-key="caps" style="width: 100px;">
+                            <div class="key-display demo">Caps Lock<br><span style="font-size:0.6rem">Регистр</span></div>
+                            <div class="key-label">Caps</div>
+                        </div>
+                        <div class="key key-a" data-key="a">
+                            <div class="key-label">A</div>
+                        </div>
+                        <div class="key key-s" data-key="s">
+                            <div class="key-label">S</div>
+                        </div>
+                        <div class="key key-d" data-key="d">
+                            <div class="key-label">D</div>
+                        </div>
+                        <div class="key key-f" data-key="f">
+                            <div class="key-label">F</div>
+                        </div>
+                        <div class="key key-g" data-key="g">
+                            <div class="key-label">G</div>
+                        </div>
+                        <div class="key key-h" data-key="h">
+                            <div class="key-label">H</div>
+                        </div>
+                        <div class="key key-j" data-key="j">
+                            <div class="key-label">J</div>
+                        </div>
+                        <div class="key key-k" data-key="k">
+                            <div class="key-label">K</div>
+                        </div>
+                        <div class="key key-l" data-key="l">
+                            <div class="key-label">L</div>
+                        </div>
+                        <div class="key key-semicolon" data-key="semicolon">
+                            <div class="key-label">; :</div>
+                        </div>
+                        <div class="key key-quote" data-key="quote">
+                            <div class="key-label">' "</div>
+                        </div>
+                        <div class="key key-enter adaptive" data-key="enter" style="width: 130px;">
+                            <div class="key-display demo">Enter<br><span style="font-size:0.6rem">Ввод</span></div>
+                            <div class="key-label">Enter</div>
+                        </div>
+                        <div class="key key-num-4" data-key="num4">
+                            <div class="key-label">4</div>
+                        </div>
+                        <div class="key key-num-5" data-key="num5">
+                            <div class="key-label">5</div>
+                        </div>
+                        <div class="key key-num-6" data-key="num6">
+                            <div class="key-label">6</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 5: ZXCV -->
+                    <div class="keyboard-row">
+                        <div class="key key-shift-left adaptive" data-key="shiftleft" style="width: 130px;">
+                            <div class="key-display demo">Shift<br><span style="font-size:0.6rem">Регистр</span></div>
+                            <div class="key-label">Shift</div>
+                        </div>
+                        <div class="key key-z" data-key="z">
+                            <div class="key-label">Z</div>
+                        </div>
+                        <div class="key key-x" data-key="x">
+                            <div class="key-label">X</div>
+                        </div>
+                        <div class="key key-c" data-key="c">
+                            <div class="key-label">C</div>
+                        </div>
+                        <div class="key key-v" data-key="v">
+                            <div class="key-label">V</div>
+                        </div>
+                        <div class="key key-b" data-key="b">
+                            <div class="key-label">B</div>
+                        </div>
+                        <div class="key key-n" data-key="n">
+                            <div class="key-label">N</div>
+                        </div>
+                        <div class="key key-m" data-key="m">
+                            <div class="key-label">M</div>
+                        </div>
+                        <div class="key key-comma" data-key="comma">
+                            <div class="key-label">, <</div>
+                        </div>
+                        <div class="key key-period" data-key="period">
+                            <div class="key-label">. ></div>
+                        </div>
+                        <div class="key key-slash" data-key="slash">
+                            <div class="key-label">/ ?</div>
+                        </div>
+                        <div class="key key-shift-right" data-key="shiftright" style="width: 160px;">
+                            <div class="key-label">Shift</div>
+                        </div>
+                        <div class="key key-arrow-up" data-key="arrowup">
+                            <div class="key-label">↑</div>
+                        </div>
+                        <div class="key key-num-1" data-key="num1">
+                            <div class="key-label">1</div>
+                        </div>
+                        <div class="key key-num-2" data-key="num2">
+                            <div class="key-label">2</div>
+                        </div>
+                        <div class="key key-num-3" data-key="num3">
+                            <div class="key-label">3</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 6: Space and Modifiers -->
+                    <div class="keyboard-row">
+                        <div class="key key-ctrl adaptive" data-key="ctrl" style="width: 80px;">
+                            <div class="key-display demo">Ctrl<br><span style="font-size:0.6rem">Управление</span></div>
+                            <div class="key-label">Ctrl</div>
+                        </div>
+                        <div class="key key-win adaptive" data-key="win" style="width: 80px;">
+                            <div class="key-display demo">Win<br><span style="font-size:0.6rem">Меню</span></div>
+                            <div class="key-label">Win</div>
+                        </div>
+                        <div class="key key-alt adaptive" data-key="alt" style="width: 80px;">
+                            <div class="key-display demo">Alt<br><span style="font-size:0.6rem">Альт</span></div>
+                            <div class="key-label">Alt</div>
+                        </div>
+                        <div class="key key-space" data-key="space" style="width: 350px;">
+                            <div class="key-label">Space</div>
+                        </div>
+                        <div class="key key-alt-gr" data-key="altgr" style="width: 80px;">
+                            <div class="key-label">Alt Gr</div>
+                        </div>
+                        <div class="key key-fn adaptive" data-key="fn" style="width: 80px;">
+                            <div class="key-display demo">Fn<br><span style="font-size:0.6rem">Функция</span></div>
+                            <div class="key-label">Fn</div>
+                        </div>
+                        <div class="key key-menu" data-key="menu" style="width: 80px;">
+                            <div class="key-label">Menu</div>
+                        </div>
+                        <div class="key key-ctrl-right" data-key="ctrlright" style="width: 80px;">
+                            <div class="key-label">Ctrl</div>
+                        </div>
+                        <div class="key key-arrow-left" data-key="arrowleft">
+                            <div class="key-label">←</div>
+                        </div>
+                        <div class="key key-arrow-down" data-key="arrowdown">
+                            <div class="key-label">↓</div>
+                        </div>
+                        <div class="key key-arrow-right" data-key="arrowright">
+                            <div class="key-label">→</div>
+                        </div>
+                        <div class="key key-num-0" data-key="num0" style="width: 120px;">
+                            <div class="key-label">0</div>
+                        </div>
+                        <div class="key key-num-period" data-key="numperiod">
+                            <div class="key-label">.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="keyboard-legend">
+                    <div class="legend-item">
+                        <div class="legend-color adaptive"></div>
+                        <span>Клавиши с адаптивными дисплеями</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color standard"></div>
+                        <span>Стандартные механические клавиши</span>
+                    </div>
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 40px; color: var(--gray); max-width: 800px; margin-left: auto; margin-right: auto;">
+                Адаптивные клавиши автоматически меняют подписи и функциональность при переключении между приложениями. 
+                Нажмите на любую адаптивную клавишу, чтобы увидеть демонстрацию.
+            </p>
+        </div>
+    </section>
+
+    <!-- Technical Specs -->
+    <section id="specs" class="specs-section">
+        <div class="container">
+            <h2 class="section-title">Технические характеристики</h2>
+            
+            <div class="specs-grid">
+                <div class="spec-card">
+                    <div class="spec-value">128×128</div>
+                    <div class="spec-name">Разрешение дисплея клавиши</div>
+                </div>
+                
+                <div class="spec-card">
+                    <div class="spec-value">&lt;15 мс</div>
+                    <div class="spec-name">Время отклика дисплея</div>
+                </div>
+                
+                <div class="spec-card">
+                    <div class="spec-value">48 ч</div>
+                    <div class="spec-name">Автономная работа модуля</div>
+                </div>
+                
+                <div class="spec-card">
+                    <div class="spec-value">Cortex-M7</div>
+                    <div class="spec-name">Центральный контроллер</div>
+                </div>
+                
+                <div class="spec-card">
+                    <div class="spec-value">3</div>
+                    <div class="spec-name">Совместимые ОС</div>
+                </div>
+                
+                <div class="spec-card">
+                    <div class="spec-value">Cherry MX</div>
+                    <div class="spec-name">Совместимые переключатели</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 80px;">
+                <h2 class="section-title">Программное обеспечение</h2>
+                <div class="solution-features">
+                    <div class="feature">
+                        <i class="fas fa-cloud feature-icon"></i>
+                        <h3>Облачная синхронизация</h3>
+                        <p>Ваши профили клавиш синхронизируются между устройствами через защищенное облачное хранилище.</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <i class="fas fa-boxes feature-icon"></i>
+                        <h3>Библиотека профилей</h3>
+                        <p>Готовые профили для Adobe Creative Suite, JetBrains IDE, AutoCAD, Blender и других популярных приложений.</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <i class="fas fa-code feature-icon"></i>
+                        <h3>Открытый API</h3>
+                        <p>API для интеграции AdaptiveKey со сторонними приложениями и создания кастомных решений.</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <i class="fas fa-sliders-h feature-icon"></i>
+                        <h3>Визуальный редактор</h3>
+                        <p>Интуитивный интерфейс для настройки клавиш, создания иконок и назначения действий.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="cta-section">
+        <div class="container">
+            <h2 class="section-title">Готовы к адаптации?</h2>
+            <p>Присоединяйтесь к революции ввода данных. Оставьте заявку, чтобы получить уведомление о старте предзаказов AdaptiveKey и специальные условия для первых покупателей.</p>
+            <a href="#contact" class="cta-button">Оставить заявку</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>AdaptiveKey</h3>
+                    <p>Гибридная система механической клавиатуры с программируемыми дисплейными клавишами для профессионалов.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Технологии</h3>
+                    <ul class="footer-links">
+                        <li><a href="#solution">Механические переключатели</a></li>
+                        <li><a href="#solution">TFT-LCD дисплеи</a></li>
+                        <li><a href="#specs">Программное обеспечение</a></li>
+                        <li><a href="#specs">Технические характеристики</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:info@adaptivekey.com">info@adaptivekey.com</a></li>
+                        <li><a href="#">Предзаказ</a></li>
+                        <li><a href="#">Техническая поддержка</a></li>
+                        <li><a href="#">Партнерская программа</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 AdaptiveKey. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Плавная прокрутка для навигации
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#contact') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Анимация появления элементов при скролле
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Назначаем анимацию для элементов
+        document.querySelectorAll('.feature, .spec-card, .problem-box').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+        
+        // Демонстрация адаптивных клавиш
+        const appProfiles = {
+            photoshop: {
+                'esc': 'Отмена',
+                'f1': 'Инструменты',
+                'f2': 'Слои',
+                'f3': 'Кисти',
+                'f4': 'Цвета',
+                'f5': 'Фильтры',
+                'f6': 'Текст',
+                'f7': 'Эффекты',
+                'f8': 'Сохранить',
+                'f9': 'Экспорт',
+                'backspace': 'Удалить слой',
+                'tab': 'Панели',
+                'caps': 'Быстрая маска',
+                'enter': 'Применить',
+                'shiftleft': 'Прямоугольник',
+                'ctrl': 'Выделить все',
+                'win': 'Горячие клавиши',
+                'alt': 'Клонировать',
+                'fn': 'Настройки'
+            },
+            vscode: {
+                'esc': 'Выход',
+                'f1': 'Команды',
+                'f2': 'Переименовать',
+                'f3': 'Найти далее',
+                'f4': 'Перейти к',
+                'f5': 'Отладка',
+                'f6': 'След.ошибка',
+                'f7': 'Назад',
+                'f8': 'Вперед',
+                'f9': 'Пауза',
+                'backspace': 'Удалить',
+                'tab': 'Автодополн.',
+                'caps': 'Блокировка',
+                'enter': 'Выполнить',
+                'shiftleft': 'Дублировать',
+                'ctrl': 'Терминал',
+                'win': 'Эксплорер',
+                'alt': 'Мультикурсор',
+                'fn': 'Фрагменты'
+            },
+            autocad: {
+                'esc': 'Прервать',
+                'f1': 'Справка',
+                'f2': 'История',
+                'f3': 'Привязка',
+                'f4': '3D орбита',
+                'f5': 'Изометрия',
+                'f6': 'Динамич.UCS',
+                'f7': 'Сетка',
+                'f8': 'Орто',
+                'f9': 'Шаг',
+                'backspace': 'Отменить',
+                'tab': 'Цикл привязки',
+                'caps': 'Координаты',
+                'enter': 'Ввод',
+                'shiftleft': 'Выровнять',
+                'ctrl': 'Выделить все',
+                'win': 'Свойства',
+                'alt': 'Копировать',
+                'fn': 'Макросы'
+            }
+        };
+        
+        let currentProfile = 'photoshop';
+        
+        // Функция обновления дисплеев клавиш
+        function updateKeyDisplays(profile) {
+            document.querySelectorAll('.key.adaptive').forEach(key => {
+                const keyName = key.getAttribute('data-key');
+                const display = key.querySelector('.key-display');
+                
+                if (display && appProfiles[profile] && appProfiles[profile][keyName]) {
+                    const label = key.querySelector('.key-label').textContent;
+                    display.innerHTML = `${label}<br><span style="font-size:0.6rem">${appProfiles[profile][keyName]}</span>`;
+                    display.classList.add('demo');
+                }
+            });
+        }
+        
+        // Инициализация дисплеев
+        updateKeyDisplays(currentProfile);
+        
+        // Обработка кликов по адаптивным клавишам
+        document.querySelectorAll('.key.adaptive').forEach(key => {
+            key.addEventListener('click', function() {
+                const display = this.querySelector('.key-display');
+                
+                if (display) {
+                    // Переключение между профилями при клике
+                    const profiles = ['photoshop', 'vscode', 'autocad'];
+                    const currentIndex = profiles.indexOf(currentProfile);
+                    const nextIndex = (currentIndex + 1) % profiles.length;
+                    currentProfile = profiles[nextIndex];
+                    
+                    // Обновляем все дисплеи
+                    updateKeyDisplays(currentProfile);
+                    
+                    // Визуальная обратная связь
+                    this.style.backgroundColor = '#8338ec';
+                    setTimeout(() => {
+                        this.style.backgroundColor = '';
+                    }, 300);
+                }
+            });
+        });
+        
+        // Добавляем эффект наведения для всех клавиш
+        document.querySelectorAll('.key').forEach(key => {
+            key.addEventListener('mouseenter', function() {
+                if (!this.classList.contains('adaptive')) {
+                    this.style.transform = 'translateY(-3px)';
+                    this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+                }
+            });
+            
+            key.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('adaptive')) {
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
